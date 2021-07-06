@@ -1,13 +1,10 @@
 function sortData() {
-    
     data = account.sort((a, b) => (a.month > b.month) ? 1 : -1);
-
 }
 
-sortData ()
+sortData()
 
-
-function renderHTML() {
+function renderTableHTML() {
 
     let HTML = ''
     for (let i = 0; i < data.length; i++) {
@@ -38,4 +35,41 @@ function renderHTML() {
     document.querySelector('.table-content').innerHTML = HTML;
 }
 
-renderHTML ()
+renderTableHTML()
+
+
+
+function renderTableFooterHTML() {
+
+    let HTML = ''
+    let incSum = 0;
+    let expSum = 0;
+
+    for (let i = 0; i < data.length; i++) {
+
+        inc = data[i].income;
+        exp = data[i].expense;
+        
+        if (exp == undefined) {
+            exp = 0;
+        }
+
+        if (inc == undefined) {
+            inc = 0;
+        }
+
+        incSum += inc;
+        expSum += exp;
+        
+    }
+        HTML += `<div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell">${incSum} Eur</div>
+                <div class="cell">${expSum} Eur</div>
+                <div class="cell">${incSum - expSum} Eur</div>`;
+
+    
+    document.querySelector('.table-footer').innerHTML = HTML;
+}
+
+renderTableFooterHTML()
