@@ -35,10 +35,6 @@ function renderTableHTML() {
     document.querySelector('.table-content').innerHTML = HTML;
 }
 
-renderTableHTML()
-
-
-
 function renderTableFooterHTML() {
 
     let HTML = ''
@@ -68,8 +64,71 @@ function renderTableFooterHTML() {
                 <div class="cell">${expSum} Eur</div>
                 <div class="cell">${incSum - expSum} Eur</div>`;
 
-    
     document.querySelector('.table-footer').innerHTML = HTML;
 }
 
+function renderSummary() {
+
+    summaryRows = ['mėnuo, kai buvo mažiausiai uždirbta, bet ne lygu nuliui', 'mėnuo, kai buvo daugiausiai uždirbta', 'mėnuo, kai buvo mažiausiai išlaidos, bet ne lygios nuliui', 'mėnuo, kai buvo didžiausios išlaidos'];
+
+    let HTML = '';
+    let maxExp = 0;
+    let minExp = Infinity;
+    let maxRev = 0;
+    let minRev = Infinity;
+
+    // get max expenses
+    for (let e = 0; e < account.length; e++) {
+        val = account[e].expense;
+        if (val > maxExp) {
+            maxExp = val;
+            maxExpMon = account[e].month;
+        }
+    }
+
+    // get min expenses
+    for (let e = 0; e < account.length; e++) {
+        val = account[e].expense;
+        if (val < minExp) {
+            minExp = val;
+            minExpMon = account[e].month;
+        }
+    }
+
+    // get max revenue
+    for (let e = 0; e < account.length; e++) {
+        val = account[e].income - account[e].expense;
+        if (val > maxRev) {
+            maxRev = val;
+            maxRevMon = account[e].month;
+        }
+    }
+
+    // get min revenue
+    for (let e = 0; e < account.length; e++) {
+        val = account[e].income - account[e].expense;
+        if (val < minRev) {
+            minRev = val;
+            minRevMon = account[e].month;
+        }
+    }
+
+    minRevMonth = months[minRevMon-1]
+    maxRevMonth = months[maxRevMon-1]
+    minExpMonth = months[minExpMon-1]
+    maxExpMonth = months[maxExpMon-1]
+    
+    monthsForSummary = [minRevMonth, maxRevMonth, minExpMonth, maxExpMonth]
+
+    for (let a = 0; a < summaryRows.length; a++) {
+        HTML += `<div class="item">
+                    <div id="minIncome" class="value">${monthsForSummary[a]}</div>
+                    <div class="title">${summaryRows[a]}</div>
+                </div>`;
+            }
+    document.querySelector('.summary-list').innerHTML = HTML;
+}
+
+renderTableHTML()
 renderTableFooterHTML()
+renderSummary()
